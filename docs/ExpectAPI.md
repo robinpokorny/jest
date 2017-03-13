@@ -778,3 +778,15 @@ exports[`drinking flavors throws on octopus 1`] = `"yuck, octopus flavor"`;
 ```
 
 Check out [React Tree Snapshot Testing](http://facebook.github.io/jest/blog/2016/07/27/jest-14.html) for more information on snapshot testing.
+
+### `.resolves`
+```js
+test('throws on octopus', async () => {
+  await expect(Promise.resolve('octopus')).resolves.toBe('octopus');
+  await expect(Promise.resolve('octopus')).resolves.not.toBe('lemon');
+});
+```
+
+await or return
+
+toBeDefined()
