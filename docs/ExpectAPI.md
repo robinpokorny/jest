@@ -780,13 +780,32 @@ exports[`drinking flavors throws on octopus 1`] = `"yuck, octopus flavor"`;
 Check out [React Tree Snapshot Testing](http://facebook.github.io/jest/blog/2016/07/27/jest-14.html) for more information on snapshot testing.
 
 ### `.resolves`
+
+Use `resolves` to unwrap the value of a fulfilled promise so any other matcher can be chained. If the promise is rejected the test fails.
+
 ```js
-test('throws on octopus', async () => {
-  await expect(Promise.resolve('octopus')).resolves.toBe('octopus');
-  await expect(Promise.resolve('octopus')).resolves.not.toBe('lemon');
+test('resolves to lemon', async () => {
+  await expect(Promise.resolve('lemon')).resolves.toBe('lemon');
+  await expect(Promise.resolve('lemon')).resolves.not.toBe('octopus');
 });
 ```
 
-await or return
+See [Testing Asynchronous Code](/jest/docs/asynchronous.html) for more information.
 
-toBeDefined()
+### `.rejects`
+
+Use `rejects` to unwrap the reason of a rejected promise so any other matcher can be chained. If the promise is fulfilled the test fails.
+
+```js
+test('rejects to drink octopus', async () => {
+  const drinkOctopus = new Promise(() => {
+    throw 'yuck, octopus flavor'
+  })
+
+  await expect(drinkOctopus).rejects.toMatch('octopus');
+
+  await expect(Promise.reject('octopus')).rejects.toBeDefined();
+});
+```
+
+See [Testing Asynchronous Code](/jest/docs/asynchronous.html) for more information.

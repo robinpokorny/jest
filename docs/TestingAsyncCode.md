@@ -76,3 +76,31 @@ test('the data is peanut butter', async () => {
 In this case, `async` and `await` are effectively just syntactic sugar for the same logic as the promises example uses.
 
 None of these forms is particularly superior to the others, and you can mix and match them across a codebase or even in a single file. It just depends on which style makes your tests the simplest.
+
+### Resolves and rejects
+
+```js
+test('throws on octopus', async () => {
+  await expect(Promise.resolve('octopus')).resolves.toBe('octopus');
+  await expect(Promise.resolve('octopus')).resolves.not.toBe('lemon');
+});
+```
+
+Using `.resolves` results in more verbose error message when the promise is rejected:
+```js
+test('resolves to octopus', async () => {
+  expect(await Promise.reject('octopus')).toBe('octopus');
+  // -> Failed: octopus
+
+  await expect(Promise.reject('octopus')).resolves.toBe('octopus');
+  // -> Expected received Promise to resolve, instead it rejected to value octopus
+});
+```
+
+Any assertion with `resolves` returns a promise which needs to be `await`ed or `return`ed:
+
+```js
+test('resolves to octopus', () => {
+  return expect(Promise.resolve('octopus')).resolves.toBeDefined();
+});
+```
